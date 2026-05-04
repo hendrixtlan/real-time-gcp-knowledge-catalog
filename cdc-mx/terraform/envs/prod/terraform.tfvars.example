@@ -1,0 +1,54 @@
+# =============================================================================
+# Configuración del entorno productivo
+# Copia este archivo a terraform.tfvars y edita con tus valores reales.
+# NO subas terraform.tfvars al repo (está en .gitignore).
+# =============================================================================
+
+project_id  = "mi-proyecto-cdc-prod"
+region      = "northamerica-south1"
+prefix      = "cdc-mx"
+alert_email = "ops-data@miempresa.mx"
+
+# -----------------------------------------------------------------------------
+# Oracle source
+# -----------------------------------------------------------------------------
+oracle_host         = "10.0.0.50"           # IP alcanzable via Cloud Interconnect
+oracle_port         = 1521
+oracle_service_name = "ORCLPDB1"
+oracle_user         = "DATASTREAM_CDC"
+oracle_password     = "REEMPLAZAR_CON_PASSWORD_REAL"
+
+# -----------------------------------------------------------------------------
+# Tablas a replicar (Oracle usa MAYÚSCULAS por defecto)
+# -----------------------------------------------------------------------------
+cdc_tables = [
+  { schema = "APP_SCHEMA", table = "CUSTOMERS" },
+  { schema = "APP_SCHEMA", table = "ORDERS" },
+  { schema = "APP_SCHEMA", table = "ORDER_ITEMS" },
+]
+
+# -----------------------------------------------------------------------------
+# AlloyDB
+# -----------------------------------------------------------------------------
+alloydb_initial_password     = "REEMPLAZAR_CON_PASSWORD_FUERTE"
+alloydb_primary_cpu_count    = 4
+alloydb_read_pool_cpu_count  = 4
+alloydb_read_pool_node_count = 2
+
+# -----------------------------------------------------------------------------
+# KMS — SOFTWARE para la mayoría, HSM si tu compliance lo requiere
+# -----------------------------------------------------------------------------
+kms_protection_level = "SOFTWARE"
+
+# -----------------------------------------------------------------------------
+# Dataflow — estos paths se llenan después de build_and_deploy.sh
+# -----------------------------------------------------------------------------
+dataflow_flex_template_gcs_path = "gs://mi-proyecto-cdc-prod-cdc-mx-templates/serving/template.json"
+dataflow_machine_type           = "n1-standard-4"
+dataflow_num_workers            = 2
+dataflow_max_workers            = 10
+
+# -----------------------------------------------------------------------------
+# Imágenes Cloud Run — se llenan después de scripts/deploy.sh build
+# -----------------------------------------------------------------------------
+arco_image_uri = "northamerica-south1-docker.pkg.dev/mi-proyecto-cdc-prod/cdc-mx/arco-service:latest"

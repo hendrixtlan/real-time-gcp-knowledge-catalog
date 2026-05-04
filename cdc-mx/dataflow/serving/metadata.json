@@ -1,0 +1,47 @@
+{
+  "name": "cdc-mx-serving",
+  "description": "CDC serving job: GCS notifications → AlloyDB upsert con SCN guard",
+  "parameters": [
+    {
+      "name": "gcs_notifications_subscription",
+      "label": "Subscripción Pub/Sub para notificaciones GCS",
+      "helpText": "Path completo: projects/PROJECT/subscriptions/NAME",
+      "regexes": ["^projects/[^/]+/subscriptions/[^/]+$"]
+    },
+    {
+      "name": "cdc_events_topic",
+      "label": "Topic para CDC events normalizados",
+      "helpText": "Path completo: projects/PROJECT/topics/NAME",
+      "regexes": ["^projects/[^/]+/topics/[^/]+$"],
+      "isOptional": true
+    },
+    {
+      "name": "dlq_topic",
+      "label": "Topic DLQ para mensajes fallidos",
+      "helpText": "Path completo: projects/PROJECT/topics/NAME",
+      "regexes": ["^projects/[^/]+/topics/[^/]+$"]
+    },
+    {
+      "name": "alloydb_writer_secret",
+      "label": "Secret ID con connection string a AlloyDB",
+      "helpText": "Solo el ID, no el path completo"
+    },
+    {
+      "name": "alloydb_password_secret",
+      "label": "Secret ID con password de AlloyDB",
+      "helpText": "Solo el ID, no el path completo"
+    },
+    {
+      "name": "triggering_frequency_seconds",
+      "label": "Frecuencia de trigger (s)",
+      "helpText": "Default 1s para baja latencia",
+      "isOptional": true
+    },
+    {
+      "name": "upsert_batch_size",
+      "label": "Tamaño de batch para upserts",
+      "helpText": "Default 100",
+      "isOptional": true
+    }
+  ]
+}
